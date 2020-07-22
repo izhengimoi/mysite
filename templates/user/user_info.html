@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+{% load user_tags %}
+
+{% block title %}
+    个人信息
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/user_info.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="user-content">
+        {% if user.is_authenticated %}
+            <div class="panel panel-default">  
+                <div class="list-group">
+                    <a href="#" class="list-group-item disabled">
+                        <h4>用户名：{{ user.username }}</h4>
+                    </a>
+                    <a href="#" class="list-group-item">昵称：无</a>
+                    <a href="#" class="list-group-item">邮箱：未绑定(点击绑定)</a>
+                    <a href="#" class="list-group-item">上次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</a>
+                    <a href="#" class="list-group-item">修改密码</a>
+                </div>   
+            </div>
+        {% else %}
+            <span>未登录，跳转到首页</span>
+            <script>
+                window.location.href = '/';
+            </script>
+        {% endif %}
+    </div>
+
+    
+
+{% endblock %}
+

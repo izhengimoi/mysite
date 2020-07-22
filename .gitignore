@@ -1,0 +1,4 @@
+settings.py
+__pycache__/
+media/
+mysite/__init__.py

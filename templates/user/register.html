@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    注册
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block nav_register_active %}active{% endblock %}
+
+{% block content %}
+    <div class="register-content">
+        {% if not user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">注册</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in reg_form %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            <p class="text-danger">{{ field.errors.as_text }}</p>
+                        {% endfor %}
+                        <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
+                        <div class="anliu">
+                            <input class="btn btn-default btn-block" type="submit" value="注册">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <span>已登录，跳转到首页</span>
+            <script>
+                window.location.href = '/';
+            </script>
+        {% endif %}
+    </div>
+{% endblock %}
+

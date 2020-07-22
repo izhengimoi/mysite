@@ -1,0 +1,78 @@
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+    正末的博客
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/aircraftwars.css' %}">
+{% endblock %}
+
+{% block nav_game_active %}active{% endblock %}
+
+
+{% block content %}
+<div id="main">
+	<div id="myPlane">
+		<div id="myPlane1" style="background-image: url(../static/images/me1.png)"></div>
+		<div id="myPlane2"></div>
+
+	</div>
+
+	<div id="bullet"></div>
+
+	<div id="plane">
+		<div id="smallPlane"></div>
+		<div id="mediumPlane">
+
+		</div>
+
+		<div id="bigPlane"></div>
+
+	</div>
+
+	<div id="life">
+		<div class="lifeNum"></div>
+		<div class="lifeNum"></div>
+		<div class="lifeNum"></div>
+	</div>
+
+	<div id="super"></div>
+
+	<div id="bomb">
+		<div class="bomb"></div>
+		<div class="bomb"></div>
+		<div class="bomb"></div>
+	</div>
+
+	<div id="superBomb">
+
+	</div>
+</div>
+
+	<div id="gameover">
+		<span>game <br />
+			over <br /></span>
+		<div class="begin"></div>
+		<div class="close">
+
+		</div>
+	</div>
+
+	<div id="wdtime">
+		<span>无敌时间</span>
+		<div class="wdtime"></div>
+	</div>
+
+	<div id="score">
+		score: <span class="score"></span>
+	</div>
+	<div id="prompt">
+		<span>请安 空格 使用全屏炸弹</span>
+	</div>
+	<script type="text/javascript" src="{% static 'js/enemyPlane.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/myPlane.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/check-hit.js' %}"></script>
+   
+{% endblock %}

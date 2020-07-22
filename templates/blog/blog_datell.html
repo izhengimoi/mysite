@@ -1,0 +1,179 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/blog_datell.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block nav_blog_listactive %}active{% endblock %}
+
+{% block content %} 
+    <div class="detell-content">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h4>
+                    {{blog.title}}
+                </h4>
+                <p class="blog-info">
+                    <span class="glyphicon glyphicon-user"></span> {{ blog.author }}
+                    <span class="glyphicon glyphicon-tag"></span><a href="{% url 'blog_with_type' blog.blog_type.id %}">{{ blog.blog_type }}</a>
+                    <span class="glyphicon glyphicon-time"></span>{{ blog.create_time|date:"Y-m-d H:i:s" }}
+                </p>
+            </div>
+            <div class="panel-body">
+                <p>{{ blog.content|safe }}</p>
+            </div>
+            
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div style="margin-top: -10px;">
+                        <nav aria-label="...">
+                            <ul class="pager">
+                                <li class="previous"><a href="#home" aria-controls="home" data-toggle="tab" style="font-size:larger;color:rgb(70, 68, 68)">评论 <span class="badge" id="shuliang">{{ comments.count }}</span></a></a></li>
+                                <li class="next"><a href="#profile" aria-controls="profile" data-toggle="tab" style="float:right; font-size:larger;color:rgb(70, 68, 68)">赞 <span class="badge" id="shuliang2">{{ likes.count }}</span></a></a></li>
+                            </ul>
+                        </nav>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="home">
+                                <div id="comment_list" style="margin-top: 14px;margin-bottom: 14px;">
+                                    {% for comment in comments %}
+                                        <div>
+                                            <p class="blog-info">
+                                                <span class="glyphicon glyphicon-user"></span> {{ comment.user.username }}
+                                                <span class="glyphicon glyphicon-time"></span> {{ comment.comment_time|date:"Y-m-d H:i:s" }}
+                                            </p>
+                                            {{ comment.text|safe }}
+                                        </div>
+                                    {% empty %}
+                                    <span id="wupinglun">暂时还没有评论</span>
+                                    {% endfor %}
+                                </div>
+                                <div style="height:10px;border-bottom:1px solid #dbd8d8"></div>
+                                <div style="margin-top: 10px;margin-bottom: 10px;">
+                                    <h4 style="display: inline;">提交评论</h4>
+                                    <span id="comment_error" style="color:#F00"></span>
+                                </div>
+                                {% if user.is_authenticated %}
+                                    <form id="comment_form" action=" {% url 'update_comment' %} " method="POST" style="overflow:hidden">
+                                        {% csrf_token %} 
+                                        <div>{{ comment_form }}</div>
+                                        <div class="anliu">
+                                            <input class="btn btn-default btn-block" type="submit" value="提交评论">
+                                        </div> 
+                                    </form>
+                                {% else %}
+                                    未登录,<a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>后方可评论
+                                {% endif %}
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="profile">
+                                <div id="like_list" style="margin-top: 14px;margin-bottom: 14px;">
+                                
+                                    {% for like in likes %}
+                                        <div >
+                                            <p class="blog-info">
+                                                <span class="glyphicon glyphicon-user"></span> {{ like.user.username }}
+                                                <span class="glyphicon glyphicon-time"></span> {{ like.like_time|date:"Y-m-d H:i:s" }}
+                                                <span class="glyphicon glyphicon-heart-empty" style="padding-right:20px;float: right;"></span>
+                                            </p>
+                                        </div>
+                                    {% empty %}
+                                    <span id="wudianzan">暂时还没有人点赞</span>
+                                    {% endfor %}
+                                    
+                                    
+                                </div>
+                                <div style="height:10px;border-bottom:1px solid #dbd8d8"></div>
+                                {% if user.is_authenticated %}
+                                <form id="like_form" action=" {% url 'update_like' %} " method="POST" style="overflow:hidden">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="object_id" value="{{ blog.id }}">
+                                    <input type="hidden" name="content_type" value="blog">
+                                    <div class="anliu">
+                                        <input class="btn btn-default btn-block" type="submit" value="点赞">
+                                    </div> 
+                                </form>
+                                {% else %}
+                                    <div style="margin-top: 10px;">
+                                        未登录,<a href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>后方可点赞
+                                    </div>    
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>         
+    </div>
+{% endblock %}
+{% block script_extends %}
+    <script type="text/javascript">
+        $("#like_form").submit(function(){
+            $.ajax({
+                url: "{% url 'update_like' %}",
+                type: 'POST',
+                data: $(this).serialize(),
+                cache: false,
+                success: function(data){
+                    console.log(data);
+                    var like_html = '<p>' + '<span class="glyphicon glyphicon-user">' + '</span>' +
+                                    '&nbsp;' + data['username'] + '&nbsp;' +
+                                    '<span class="glyphicon glyphicon-time">' + '</span>' + '&nbsp;' +data['like_time'] + 
+                                    ' <span class="glyphicon glyphicon-heart-empty" style="padding-right:20px;float: right;"></span>' + '</p>';
+                    $("#like_list").prepend(like_html);
+                    $("#wudianzan").text('');
+                    $("#shuliang2").text(data['like_number'])
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+        $("#comment_form").submit(function(){
+            $("#comment_error").text('');
+            if(CKEDITOR.instances["id_text"].document.getBody().getText().trim()==''){
+                $("#comment_error").text('评论内容不能为空');
+                return false;
+            }
+
+            CKEDITOR.instances["id_text"].updateElement();
+            $.ajax({
+                url: "{% url 'update_comment' %}",
+                type: 'POST',
+                data: $(this).serialize(),
+                cache: false,
+                success: function(data){
+                    console.log(data);
+                    if(data['status']=="SUCCESS"){
+                        var comment_html = '<p>' + '<span class="glyphicon glyphicon-user">' + '</span>' +
+                                           '&nbsp;' + data['username'] + '&nbsp;' +
+                                           '<span class="glyphicon glyphicon-time">' + '</span>' + '&nbsp;' +data['comment_time'] + 
+                                           data['text'] + '</p>';
+                        $("#comment_list").prepend(comment_html);
+                        CKEDITOR.instances["id_text"].setData('');
+                        $("#wupinglun").text('');
+                                                $("#shuliang").text(data['comment_number'])
+                        
+                    }
+                    else{
+                        
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+    </script>
+{% endblock %}
+

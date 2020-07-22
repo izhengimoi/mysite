@@ -1,0 +1,56 @@
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+{% load user_tags %}
+
+{% block title %}
+    登录
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block nav_login_active %}active{% endblock %}
+
+{% block content %}
+    <div class="login-content">
+        {% if not user.is_authenticated %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title text-center">登录</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in login_form %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            <p class="text-danger">{{ fied.errors.as_text }}</p>
+                        {% endfor %}
+                        <span class="pull-left text-danger">{{ login_form.non_field_errors }}</span>
+                        <div class="anliu">
+                            <input class="btn btn-default btn-block" type="submit" value="登录">
+                        </div>
+                        
+                    </form>
+                    <div style="margin-top: 0.5em;">
+                        <a href="{% get_login_qq_url %}">
+                            <img src="{% static 'images/QQ.png' %}">
+                            使用qq账号登录
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <span>已登录，跳转到首页</span>
+            <script>
+                window.location.href = '/';
+            </script>
+        {% endif %}
+    </div>
+
+    
+
+{% endblock %}
+

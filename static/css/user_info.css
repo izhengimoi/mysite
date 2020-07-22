@@ -1,0 +1,10 @@
+*{
+    list-style-type: none;
+}
+div.user-content{
+    height: 200px;width: 324px;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+}

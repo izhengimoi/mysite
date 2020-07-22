@@ -1,0 +1,347 @@
+body {
+	text-align: center;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	width: 480px;
+	height: 700px;
+	background: url(../images/background.png);
+	z-index: 10;
+	display: inline-block;
+	left: 0;
+	right: 0;
+	margin: auto;
+	position: relative;
+}
+
+#myPlane {
+	width: 102px;
+	height: 126px;
+	position: absolute;
+	overflow: hidden;
+	left: 189px;
+	top: 574px;
+}
+
+#myPlane1 {
+	width: 102px;
+	height: 126px;
+	position: absolute;
+}
+
+#myPlane .myPlane1 {
+	width: 102px;
+	height: 126px;
+	background: url(../images/me_destroy_1.png);
+	position: absolute;
+}
+
+#myPlane2 {
+	width: 102px;
+	height: 126px;
+	background: url(../images/me2.png);
+	position: absolute;
+}
+
+.bullet {
+	width: 6px;
+	height: 11px;
+	background: url(../images/bullet2.png);
+	position: absolute;
+}
+
+.smallPlane {
+	width: 57px;
+	height: 43px;
+	background-image: url(../images/enemy1.png);
+	position: absolute;
+}
+
+.smallPlane1 {
+	width: 57px;
+	height: 43px;
+	background-image: url(../images/enemy1_down1.png);
+	position: absolute;
+}
+
+.smallPlane2 {
+	width: 57px;
+	height: 43px;
+	background-image: url(../images/enemy1_down2.png);
+	position: absolute;
+}
+
+.smallPlane3 {
+	width: 57px;
+	height: 43px;
+	background-image: url(../images/enemy1_down3.png);
+	position: absolute;
+}
+
+.smallPlane4 {
+	width: 57px;
+	height: 43px;
+	background-image: url(../images/enemy1_down4.png);
+	position: absolute;
+}
+
+.mediumPlane {
+	width: 69px;
+	height: 99px;
+	background-image: url(../images/enemy2.png);
+	position: absolute;
+}
+
+.mediumPlane1 {
+	width: 69px;
+	height: 99px;
+	background-image: url(../images/enemy2_down1.png);
+	position: absolute;
+}
+
+.mediumPlane2 {
+	width: 69px;
+	height: 99px;
+	background-image: url(../images/enemy2_down2.png);
+	position: absolute;
+}
+
+.mediumPlane3 {
+	width: 69px;
+	height: 99px;
+	background-image: url(../images/enemy2_down3.png);
+	position: absolute;
+}
+
+.mediumPlane4 {
+	width: 69px;
+	height: 99px;
+	background-image: url(../images/enemy2_down4.png);
+	position: absolute;
+}
+
+
+
+.bigPlane {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_n1.png);
+	position: absolute;
+}
+
+.bigPlane1 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down1.png);
+	position: absolute;
+}
+
+.bigPlane2 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down2.png);
+	position: absolute;
+}
+
+.bigPlane3 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down3.png);
+	position: absolute;
+}
+
+.bigPlane4 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down4.png);
+	position: absolute;
+}
+.bigPlane5 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down5.png);
+	position: absolute;
+}
+.bigPlane6 {
+	width:169px;
+	height: 258px;
+	background-image: url(../images/enemy3_down6.png);
+	position: absolute;
+}
+
+
+
+#mediumPlane div div {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+#bigPlane div div {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+#mediumPlane .span {
+	display: inline-block;
+	border-radius: 10px;
+	background-color: greenyellow;
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+#bigPlane .span {
+	display: inline-block;
+	border-radius: 10px;
+	background-color: greenyellow;
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+
+#gameover {
+	width: 480px;
+	height: 700px;
+	z-index: 100;
+	display: none;
+	left: 0;
+	right: 0;
+	top: 8px;
+	margin: auto;
+	position: absolute;
+}
+
+#gameover .begin {
+	width: 300px;
+	height: 41px;
+	background: url(../images/again.png);
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 60%;
+	margin: auto;
+}
+
+#gameover span {
+	font-size: 40px;
+	display: inline-block;
+	position: absolute;
+	top: 20%;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.close {
+	width: 300px;
+	height: 41px;
+	background: url(../images/gameover.png);
+	position: absolute;
+	top: 40%;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+#score {
+
+	display: inline-block;
+	margin-top: 60px;
+	width: 100px;
+	height: 100px;
+	background: #ffff40;
+	position: absolute;
+	top: 8px;
+	left: 1190px;
+	font-size: 35px;
+}
+
+#prompt {
+	display: inline-block;
+	margin-top: 60px;
+	height: 57px;
+	background: url(../images/bomb.png) no-repeat;
+	position: absolute;
+	top: 8px;
+	left: 1190px;
+	font-size: 35px;
+}
+#prompt span{
+	display:inline-block;
+	margin-left: 70px;
+}
+
+#life {
+	display: inline-block;
+	height: 57px;
+	position: absolute;
+	left: 0px;
+}
+
+.lifeNum {
+	display: inline-block;
+	width: 46px;
+	height: 57px;
+	margin-right: 4px;
+	background: url(../images/life.png);
+}
+
+#wdtime {
+	display: none;
+	width: 480px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	position: relative;
+	top: 90%;
+	font-size: 30px;
+	color: brown;
+}
+
+#wdtime div {
+	width: 480px;
+	height: 20px;
+	border-radius: 10px;
+	position: absolute;
+	background-color: #f40;
+}
+
+#super {
+	width: 58px;
+	height: 88px;
+	position: relative;
+}
+
+.super {
+	display: inline-block;
+	width: 58px;
+	height: 88px;
+	background: url(../images/bullet_supply.png);
+	position: absolute;
+}
+#bomb{
+	display: inline-block;
+	height: 57px;
+	position: absolute;
+	left: 0px;
+	top:643px;
+}
+#bomb .bomb{
+	display: inline-block;
+	width:63px;
+	height: 57px;
+	margin-right: 4px;
+	background: url(../images/bomb.png);
+}
+.superBomb {
+	display: inline-block;
+	width:60px;
+	height: 107px;
+	background: url(../images/bomb_supply.png);
+	position: absolute;
+}

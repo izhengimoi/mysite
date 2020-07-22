@@ -1,0 +1,30 @@
+*{
+    list-style-type: none;
+}
+
+ul.blog-info{
+    list-style-type: none;
+    margin-bottom: 2em; 
+}
+ul.blog-info li{
+    display: inline-block;
+}
+div.comment-area{
+    margin-top: 2em;
+}
+
+div.anliu{
+    margin-top: 0.5em;
+}
+
+div.django-ckeditor-widget{
+    width: 100%;
+}
+
+div.detell-content{
+    height: 200px;width: 395px;
+    position: absolute;
+    left: 50%;
+    margin-top: 8em;
+    transform: translate(-50%, -50%);
+}
