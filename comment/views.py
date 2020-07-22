@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from .models import Comment,Like
 from .form import CommentForm
-from django.utils import timezone
+import datetime
 # Create your views here.
 def update_comment(request):
     
@@ -19,7 +19,9 @@ def update_comment(request):
         comment.save()
         data['status'] = 'SUCCESS'
         data['username'] = comment.user.username
-        data['comment_time'] = timezone.localtime().strftime('%Y-%m-%d %H:%M:%S')
+        datetime.datetime.now()
+        data['comment_time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(data['comment_time'])
         data['text'] = comment.text
         data['comment_number'] = Comment.objects.filter(content_type = comment.content_type, object_id = comment.object_id).count()
           
@@ -42,6 +44,7 @@ def update_like(request):
     like.object_id = object_id
     like.save()
     data['username'] = like.user.username
-    data['like_time'] = timezone.localtime().strftime('%Y-%m-%d %H:%M:%S')
+    data['like_time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
     data['like_number'] = Like.objects.filter(content_type = like.content_type, object_id = like.object_id).count()
     return JsonResponse(data)
