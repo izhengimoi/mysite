@@ -3,10 +3,11 @@ from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .form import LoginForm, RegForm
+from .form import LoginForm, RegForm, ChangeNicknameForm, ChangeEmail
 from django.conf import settings
 from urllib.request import urlopen
 from urllib.parse import urlencode
+from .models import Profile
 
 
 
@@ -71,5 +72,46 @@ def user_info(request):
     context = {}
     return render(request, "user/user_info.html", context) 
 
+def change_nickname(request):
+    redirect_to = request.GET.get('from', reverse('user_info'))
 
+    if request.method == 'POST':
+        form = ChangeNicknameForm(request.POST, user=request.user)
+        if form.is_valid():
+            nickname_new = form.cleaned_data['nickname_new']
+            profile, created = Profile.objects.get_or_create(user=request.user)
+            profile.nickname = nickname_new
+            profile.save()
+            return redirect(redirect_to)
+    else:
+        form = ChangeNicknameForm()
+
+    context = {}
+    context['page_title'] = '修改昵称'
+    context['form_tile'] = '修改昵称'
+    context['submit_text'] = '修改'
+    context['form'] = form
+    return render(request, 'user/form.html', context)
+
+
+def change_email(request):
+    redirect_to = request.GET.get('from', reverse('user_info'))
+
+    if request.method == 'POST':
+        form = ChangeEmail(request.POST, user=request.user)
+        if form.is_valid():
+            email_new = form.cleaned_data['email_new']
+            user_email = User.objects.filter(user=request.user)
+            user_email.email = email_new
+            user_email.save()
+            return redirect(redirect_to)
+    else:
+        form = ChangeEmail()
+
+    context = {}
+    context['page_title'] = '修改邮箱'
+    context['form_tile'] = '修改邮箱'
+    context['submit_text'] = '修改'
+    context['form'] = form
+    return render(request, 'user/form.html', context)
 

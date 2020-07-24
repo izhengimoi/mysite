@@ -48,7 +48,7 @@
                                     {% for comment in comments %}
                                         <div>
                                             <p class="blog-info">
-                                                <span class="glyphicon glyphicon-user"></span> {{ comment.user.username }}
+                                                <span class="glyphicon glyphicon-user"></span> {{ comment.user.get_nickname_or_username }}
                                                 <span class="glyphicon glyphicon-time"></span> {{ comment.comment_time|date:"Y-m-d H:i:s" }}
                                             </p>
                                             {{ comment.text|safe }}
@@ -80,7 +80,7 @@
                                     {% for like in likes %}
                                         <div >
                                             <p class="blog-info">
-                                                <span class="glyphicon glyphicon-user"></span> {{ like.user.username }}
+                                                <span class="glyphicon glyphicon-user"></span> {{ like.user.get_nickname_or_username }}
                                                 <span class="glyphicon glyphicon-time"></span> {{ like.like_time|date:"Y-m-d H:i:s" }}
                                                 <span class="glyphicon glyphicon-heart-empty" style="padding-right:20px;float: right;"></span>
                                             </p>

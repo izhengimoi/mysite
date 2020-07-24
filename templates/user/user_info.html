@@ -20,8 +20,19 @@
                     <a href="#" class="list-group-item disabled">
                         <h4>用户名：{{ user.username }}</h4>
                     </a>
-                    <a href="#" class="list-group-item">昵称：无</a>
+
+                    {% if user.profile.nickname %}
+                    <a href="{% url 'change_nickname' %}" class="list-group-item">昵称：{{ user.profile.nickname }}</a>
+                    {% else %}
+                    <a href="{% url 'change_nickname' %}" class="list-group-item">昵称：暂无昵称(点击设置)</a>
+                    {% endif %}
+
+                    {% if user.email %}
+                    <a href="#" class="list-group-item">邮箱：{{ user.email }}</a>
+                    {% else %}
                     <a href="#" class="list-group-item">邮箱：未绑定(点击绑定)</a>
+                    {% endif %}
+
                     <a href="#" class="list-group-item">上次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</a>
                     <a href="#" class="list-group-item">修改密码</a>
                 </div>   
