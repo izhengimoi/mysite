@@ -38,24 +38,23 @@ def login_by_qq(request):
         auth.login(request, relationship.user)
         return redirect(reverse('home'))
     else:
-        # params = {
-        #     'access_token': access_token,
-        #     'oauth_consumer_key': settings.QQ_APP_ID,
-        #     'openid': openid,
-        # }
-        # response = urlopen('https://grapdecodeh.qq.com/user/get_user_info?' + urlencode(params))
-        # data = json.loadsresponse.read().decode('utf8')
+        params = {
+            'access_token': access_token,
+            'oauth_consumer_key': settings.QQ_APP_ID,
+            'openid': openid,
+        }
+        response = urlopen('https://graph.qq.com/user/get_user_info?' + urlencode(params))
 
+        data = json.loads(response.read().decode('utf8'))
 
         username = '用户' + ''.join(random.sample(string.ascii_letters + string.digits, 6))
         password = ''.join(random.sample(string.ascii_letters + string.digits, 8))
         user = User.objects.create_user(username, '',password)
         
-       
-        # nickname = data['nickname']
-        # created_nickname = Profile.objects.create(user=user)
-        # created_nickname.nickname = nickname_new
-        # created_nickname.save()
+        nickname = data['nickname']
+        created_nickname = Profile.objects.create(user=user)
+        created_nickname.nickname = nickname
+        created_nickname.save()
 
 
         relationship = OAuthRelationship()
