@@ -25,7 +25,7 @@
                         {% for field in reg_form %}
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                             {{ field }}
-                            <p class="text-danger">{{ field.errors.as_text }}</p>
+                            <span class="text-danger">{{ field.errors.as_text }}</span>
                         {% endfor %}
                         <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
                         <div class="anliu">

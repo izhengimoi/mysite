@@ -11,5 +11,6 @@ urlpatterns = [
     path('login_by_qq', views.login_by_qq, name = 'login_by_qq'),
     path('change_nickname', views.change_nickname, name = 'change_nickname'),
     path('change_email', views.change_email, name = 'change_email'),
+    path('change_password', views.change_password, name = 'change_password'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

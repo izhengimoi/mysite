@@ -18,13 +18,8 @@ def update_comment(request):
         comment.text = comment_form.cleaned_data['text']
         comment.content_object = comment_form.cleaned_data['content_object']
         comment.save()
-        if Profile.objects.filter(user=request.user).exists():
-            profile =  Profile.objects.get(user=request.user)
-            username = profile.nickname
-        else:
-            username = request.user.username
         data['status'] = 'SUCCESS'
-        data['username'] = username
+        data['username'] = comment.user.get_nickname_or_username()
         datetime.datetime.now()
         data['comment_time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print(data['comment_time'])
@@ -49,12 +44,7 @@ def update_like(request):
     like.content_object = model_obj
     like.object_id = object_id
     like.save()
-    if Profile.objects.filter(user=request.user).exists():
-        profile =  Profile.objects.get(user=request.user)
-        username = profile.nickname
-    else:
-        username = request.user.username
-    data['username'] = username
+    data['username'] = like.user.get_nickname_or_username()
     data['like_time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     data['like_number'] = Like.objects.filter(content_type = like.content_type, object_id = like.object_id).count()

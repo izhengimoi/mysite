@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .form import LoginForm, RegForm, ChangeNicknameForm, ChangeEmail
+from .form import LoginForm, RegForm, ChangeNicknameForm, ChangeEmail, ChangePassword
 from django.conf import settings
 from urllib.request import urlopen
 from urllib.parse import urlencode
@@ -101,16 +101,35 @@ def change_email(request):
         form = ChangeEmail(request.POST, user=request.user)
         if form.is_valid():
             email_new = form.cleaned_data['email_new']
-            user_email = User.objects.filter(user=request.user)
-            user_email.email = email_new
-            user_email.save()
+            request.user.email = email_new
+            request.user.save()
             return redirect(redirect_to)
     else:
         form = ChangeEmail()
 
     context = {}
-    context['page_title'] = '修改邮箱'
-    context['form_tile'] = '修改邮箱'
+    context['page_title'] = '绑定邮箱'
+    context['form_tile'] = '绑定邮箱'
+    context['submit_text'] = '绑定'
+    context['form'] = form
+    return render(request, 'user/form.html', context)
+
+def change_password(request):
+    redirect_to = request.GET.get('from', reverse('user_info'))
+
+    if request.method == 'POST':
+        form = ChangePassword(request.POST, user=request.user)
+        if form.is_valid():
+            password_new = form.cleaned_data['password_new']
+            request.user.set_password(password_new)
+            request.user.save()
+            return redirect(redirect_to)
+    else:
+        form = ChangePassword()
+
+    context = {}
+    context['page_title'] = '修改密码'
+    context['form_tile'] = '修改密码'
     context['submit_text'] = '修改'
     context['form'] = form
     return render(request, 'user/form.html', context)
