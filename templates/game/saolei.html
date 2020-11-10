@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+    扫雷
+{% endblock %}
+
+{% block header_exends %}
+    <link rel="stylesheet" href="{% static 'css/saolei.css' %}">
+{% endblock %}
+
+{% block nav_game_active %}active{% endblock %}
+
+{% block content %}
+<div id="mine">
+    <div class="level">
+        <button>初级</button>
+        <button>中级</button>
+        <button>高级</button>
+        <button>重新开始</button>
+    </div>
+
+    <div class="gameBox">
+
+    </div>
+    <div class="info">剩余雷数：<span class="mineNum"></span></div>
+
+</div>
+
+<script type="text/javascript" src="{% static 'js/saolei.js' %}"></script>
+{% endblock %}

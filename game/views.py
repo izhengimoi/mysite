@@ -12,4 +12,7 @@ def duobilizi(request):
 def aircraftwars(request):
     return render(request, "game/aircraftwars.html")
 
+def saolei(request):
+    return render(request, "game/saolei.html")
+
 
