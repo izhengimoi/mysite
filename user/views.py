@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .form import LoginForm, RegForm, ChangeNicknameForm, ChangeEmail, ChangePassword
+from .form import LoginForm, RegForm, ChangeNicknameForm, ChangeEmail, ChangePassword, UnBundEmail
 from django.conf import settings
 from urllib.request import urlopen
 from urllib.parse import urlencode, parse_qs
 from .models import Profile, OAuthRelationship
 import time, random, json, string
+from django.core.mail import send_mail
 
 
 
@@ -133,7 +134,7 @@ def change_email(request):
     redirect_to = request.GET.get('from', reverse('user_info'))
 
     if request.method == 'POST':
-        form = ChangeEmail(request.POST, user=request.user)
+        form = ChangeEmail(request.POST, request=request)
         if form.is_valid():
             email_new = form.cleaned_data['email_new']
             request.user.email = email_new
@@ -147,7 +148,56 @@ def change_email(request):
     context['form_tile'] = '绑定邮箱'
     context['submit_text'] = '绑定'
     context['form'] = form
-    return render(request, 'user/form.html', context)
+    return render(request, 'user/change_email.html', context)
+
+def un_bung_email(request):
+    redirect_to = request.GET.get('from', reverse('user_info'))
+
+    if request.method == 'POST':
+        form = UnBundEmail(request.POST, request=request)
+        if form.is_valid():
+            request.user.email = ''
+            request.user.save()
+            return redirect(redirect_to)
+    else:
+        form = UnBundEmail()
+
+    context = {}
+    context['page_title'] = '解绑邮箱'
+    context['form_tile'] = '解绑邮箱'
+    context['submit_text'] = '解绑'
+    context['form'] = form
+    return render(request, 'user/un_bung_email.html', context)
+
+
+def send_code(request):
+    email = request.GET.get('email','')
+    data = {}
+
+    if email!='':
+
+        code = ''.join(random.sample(string.ascii_letters+string.digits,6))
+        now = int(time.time())
+        send_code_time = request.session.get('send_code_time',0)
+        if now - send_code_time <60:
+            data['status'] = 'ERROR'
+        else:
+            request.session['email_code'] = code
+            request.session['send_code_time'] = now
+            send_mail(
+                '绑定邮箱',
+                '验证码：%s' % code,
+                '1752543405@qq.com',
+                [email],
+                fail_silently=False,
+            )
+            data['status'] = 'SUCCESS'
+    else:
+        data['status'] = 'ERROR'
+
+    return JsonResponse(data)
+
+
 
 def change_password(request):
     redirect_to = request.GET.get('from', reverse('user_info'))

@@ -25,6 +25,7 @@ class LoginForm(forms.Form):
         else:
             self.cleaned_data['user'] = user
         return self.cleaned_data
+    
         
 class RegForm(forms.Form):
     username = forms.CharField(
@@ -93,23 +94,62 @@ class ChangeEmail(forms.Form):
         label='新的邮箱',
         max_length=100,
         widget=forms.TextInput(
-            attrs={'class':'form-control', 'placeholder':'请输入新的邮箱'}
+            attrs={'class':'form-control', 'placeholder':'请输入新的邮箱','email':'email'}
         )
     )
 
-
     def __init__(self, *args, **kwargs):
-        if 'user' in kwargs:
-            self.user = kwargs.pop('user')
+        if 'request' in kwargs:
+            self.request = kwargs.pop('request')
         super(ChangeEmail, self).__init__(*args, **kwargs)
 
     def clean(self):
-        if self.user.is_authenticated:
-            self.cleaned_data['user'] = self.user
+        if self.request.user.is_authenticated:
+            self.cleaned_data['user'] = self.request.user
         else:
             raise forms.ValidationError('用户未登录！')
-        return self.cleaned_data
 
+        
+        code = self.request.session.get('email_code','')
+
+        # verification_code = self.cleaned_data.get('verification_code','')
+        verification_code = self.request.POST.get('email_code','')
+        if not(code!='' and code==verification_code):
+            raise forms.ValidationError('验证码错误')
+
+        return self.cleaned_data
+    
+
+class UnBundEmail(forms.Form):
+
+    verification_code = forms.CharField(
+        label='验证码',
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={'class':'form-control', 'placeholder':'查看邮件获取验证码'}
+        )
+    )
+
+    def __init__(self, *args, **kwargs):
+        if 'request' in kwargs:
+            self.request = kwargs.pop('request')
+        super(UnBundEmail, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if self.request.user.is_authenticated:
+            self.cleaned_data['user'] = self.request.user
+        else:
+            raise forms.ValidationError('用户未登录！')
+
+        code = self.request.session.get('email_code','')
+
+        verification_code = self.cleaned_data.get('verification_code','')
+        # verification_code = self.request.POST.get('email_code','')
+        if not(code!='' and code==verification_code):
+            raise forms.ValidationError('验证码错误')
+
+        return self.cleaned_data
+    
 
 
 class ChangePassword(forms.Form):

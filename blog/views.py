@@ -38,7 +38,6 @@ def blog_get_paginator(request, blogs_all_list):
         blog_count = Blog.objects.filter(create_time__year=blog_date.year,
                                          create_time__month = blog_date.month, is_delete=False).count()
         blog_date_list[blog_date] = blog_count   
-        print(blog_date.month)
     #缓存数据
     
     context["page_of_blogs"] = page_of_blogs

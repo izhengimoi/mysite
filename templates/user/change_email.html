@@ -1,0 +1,59 @@
+{% extends 'user/form.html' %}
+
+{% block other_buttons %}
+    <!-- <button id="send_code" class="btn btn-primary">发送验证码</button> -->
+    <label for="email_code">验证码</label>
+    <div class="input-group">
+        <input type="text" id="email_code" name="email_code" class="form-control" placeholder="验证码" required>
+        <span class="input-group-btn">
+            <button id="send_code" class="btn btn-primary" type="button">发送验证码</button>
+        </span>
+    </div>
+{% endblock %}
+
+{% block script_extends %}
+    <script>
+        $("#send_code").click(function(){
+            var email = $("#id_email_new").val();
+            var code = $("#email_code").val();
+            var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+            if(!(reg.test(email))){
+                alert("邮箱格式不正确")
+            }else{
+                $.ajax({
+                    url: "{% url 'send_code' %}",
+                    type: 'GET',
+                    data: {
+                        'email':email,
+                    },
+                    cache:false,
+                    success:function(data){
+                        if(data['status']=='ERROR'){
+                            alert(data['status']);
+                        }
+                    }
+                });
+
+                $(this).addClass('disabled');
+                $(this).attr('disabled', true);
+                var time = 60;
+                $(this).text(time +'s');
+                var task = setInterval(() =>{
+                    if(time <= 0){
+                        clearInterval(task);
+                        $(this).removeClass('disabled');
+                        $(this).attr('disabled', false);
+                        $(this).text('发送验证码');
+                        return false;
+                    }
+
+                    time--;
+                    $(this).text(time +'s');
+                },1000);
+            }
+
+            
+
+        });
+    </script>
+{% endblock %} 

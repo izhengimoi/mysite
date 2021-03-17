@@ -6,7 +6,7 @@
 {% block title %}
     {{ page_title }}
 {% endblock %}
-
+=
 {% block header_exends %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
@@ -28,10 +28,15 @@
                             {% endif %}
                             {{ field }}
                             <p class="text-danger">{{ fied.errors.as_text }}</p>
+
                         {% endfor %}
+                        {% block other_buttons %}{% endblock %}
                         <span class="pull-left text-danger">{{ form.non_field_errors }}</span>
+
+                        
+
                         <div class="anliu">
-                            <input class="btn btn-default btn-block" type="submit" value="{{ submit_text }}">
+                            <input class="btn btn-default btn-block" type="submit" id="submit" value="{{ submit_text }}">
                         </div>
                         
                     </form>

@@ -28,11 +28,10 @@
                     {% endif %}
 
                     {% if user.email %}
-                    <a href="{% url 'change_email' %}" class="list-group-item">邮箱：{{ user.email }}</a>
+                    <a href="{% url 'un_bung_email' %}" class="list-group-item">邮箱：{{ user.email }}</a>
                     {% else %}
                     <a href="{% url 'change_email' %}" class="list-group-item">邮箱：未绑定(点击绑定)</a>
                     {% endif %}
-
                     <p class="list-group-item">上次登录时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</p>
                     <a href="{% url 'change_password' %}" class="list-group-item">修改密码</a>
                 </div>   

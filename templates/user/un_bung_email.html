@@ -1,0 +1,27 @@
+{% extends 'user/form.html' %}
+
+
+{% block other_buttons %}
+    <button id="old_email" style="display: none;" value="{{ user.email }}">{{ user.email }}</button>
+{% endblock %}
+
+{% block script_extends %}
+    <script>
+        $(function(){
+            var email = $("#old_email").val();
+            $.ajax({
+                url: "{% url 'send_code' %}",
+                type: 'GET',
+                data: {
+                    'email':email,
+                },
+                cache:false,
+                success:function(data){
+                    if(data['status']=='ERROR'){
+                        alert(data['status']);
+                    }
+                }
+            });
+        })
+    </script>
+{% endblock %} 
