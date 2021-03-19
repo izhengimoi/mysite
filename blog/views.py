@@ -48,11 +48,11 @@ def blog_get_paginator(request, blogs_all_list):
     return context
 
 def blog_list(request):
-
-    blogs_all_list = Blog.objects.filter(is_delete=False)
+    wd = request.GET.get('wd','')
+    blogs_all_list = Blog.objects.filter(is_delete=False,title__icontains=wd) | Blog.objects.filter(is_delete=False,content__icontains=wd)
     context = blog_get_paginator(request, blogs_all_list)
-    
     return render(request, "blog/blog_list.html", context)
+
 
 def blog_datell(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
