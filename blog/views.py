@@ -11,9 +11,9 @@ from comment.models import Comment, Like
 from comment.form import CommentForm
 
 # Create your views here.
-def blog_get_paginator(request, blogs_all_list):
+def blog_get_paginator(request, blogs_all_list,p):
     context = {}
-    paginator = Paginator(blogs_all_list, 5)
+    paginator = Paginator(blogs_all_list, p)
     page_num = request.GET.get('page', 1)
     page_of_blogs = paginator.get_page(page_num)
     curentr_page_num = page_of_blogs.number
@@ -49,8 +49,11 @@ def blog_get_paginator(request, blogs_all_list):
 
 def blog_list(request):
     wd = request.GET.get('wd','')
+    p = 5        
     blogs_all_list = Blog.objects.filter(is_delete=False,title__icontains=wd) | Blog.objects.filter(is_delete=False,content__icontains=wd)
-    context = blog_get_paginator(request, blogs_all_list)
+    if blogs_all_list.count()!=0:
+        p=blogs_all_list.count()
+    context = blog_get_paginator(request, blogs_all_list,p)
     return render(request, "blog/blog_list.html", context)
 
 
@@ -71,14 +74,14 @@ def blog_datell(request, blog_id):
 def blog_with_type(request, blog_type_id):
     type_name = get_object_or_404(BlogType, id=blog_type_id)
     blogs_all_list = Blog.objects.filter(blog_type=type_name, is_delete=False)
-    context = blog_get_paginator(request, blogs_all_list)
+    context = blog_get_paginator(request, blogs_all_list,p)
     context["type_name"] = type_name
     return render(request, "blog/blog_with_type.html", context)
 
 def blog_with_date(request, year, month):
     blogs_all_list = Blog.objects.filter(create_time__year=year, create_time__month = month, is_delete=False)
     blog_with_data = "%s年%s月" % (year, month)
-    context = blog_get_paginator(request, blogs_all_list)
+    context = blog_get_paginator(request, blogs_all_list,p)
     context["blog_with_data"] = blog_with_data
     return render(request, "blog/blog_with_date.html", context)
 
